@@ -1,0 +1,164 @@
+# Massachusetts Solar + Mass Save Lead Bot Configuration
+# ======================================================
+
+# Targeting Configuration
+# -----------------------
+# Option 1: Target specific counties
+target_counties:
+  - Essex
+  - Middlesex
+  - Suffolk
+
+# Option 2: Target specific towns (overrides counties if set)
+# target_towns:
+#   - Haverhill
+#   - Methuen
+#   - Andover
+#   - Lawrence
+
+# Option 3: Radius-based targeting (requires geocoding)
+# radius_zip: "01830"
+# radius_miles: 15
+
+# Filtering Rules
+# ---------------
+filters:
+  # Property type preferences
+  exclude_condos: false
+  prefer_single_family: true
+
+  # Age preferences (older homes = more efficiency opportunities)
+  prefer_older_homes: true
+  min_year_built: null  # e.g., 1900
+  max_year_built: 2000  # Focus on pre-2000 homes for efficiency upgrades
+
+  # Size preferences
+  prefer_higher_sqft: true
+  min_sqft: 1000
+  max_sqft: null
+
+  # Value preferences
+  prefer_higher_assessed_value: true
+  min_assessed_value: 200000
+  max_assessed_value: null
+
+  # Owner-occupied preference
+  prefer_owner_occupied: true
+
+  # HOA exclusion (only if explicitly detectable in data)
+  exclude_hoa_if_detected: false
+
+# Output Limits
+# -------------
+output:
+  min_leads_per_day: 25
+  max_leads_per_day: 150
+
+  # Export formats
+  export_csv: true
+  export_sqlite: true
+  export_google_sheets: false  # Requires credentials in .env
+
+# Scheduling
+# ----------
+scheduler:
+  enabled: true
+  # Cron expression: minute hour day month weekday
+  # Default: 7:00 AM every day
+  cron: "0 7 * * *"
+  timezone: "America/New_York"
+
+# Scoring Weights (must sum to 100)
+# ---------------------------------
+scoring:
+  # Property type
+  single_family_weight: 20
+  multi_family_weight: 10
+  condo_weight: 5
+
+  # Size factor (normalized 0-1 based on sqft)
+  sqft_weight: 15
+
+  # Age factor (older = higher score for efficiency)
+  age_weight: 15
+
+  # Value factor (higher = more financing capacity)
+  value_weight: 15
+
+  # Owner-occupied factor
+  owner_occupied_weight: 20
+
+  # Data completeness bonus
+  data_completeness_weight: 10
+
+# Program Flags
+# -------------
+programs:
+  solar:
+    enabled: true
+    # Criteria for solar candidacy
+    min_sqft: 1200
+    min_value: 150000
+    prefer_single_family: true
+
+  mass_save:
+    enabled: true
+    # Criteria for Mass Save candidacy
+    max_year_built: 2010  # Older homes benefit more
+    min_sqft: 800
+
+# AI Notes Configuration
+# ----------------------
+ai_notes:
+  enabled: true
+  # Provider: openai, anthropic, or template (no API needed)
+  provider: template  # Default to template-based, no API required
+
+  # Generate these types of drafts
+  generate_door_knock_notes: true
+  generate_sms_draft: true
+  generate_email_draft: true
+
+  # Compliance settings
+  include_disclaimers: true
+  avoid_guarantee_language: true
+
+# Data Sources
+# ------------
+data_sources:
+  # User CSV Mode (always enabled)
+  user_csv:
+    enabled: true
+    import_directory: "./imports"
+    auto_detect_columns: true
+
+  # Open Data Mode (best-effort)
+  open_data:
+    enabled: true
+    cache_days: 7  # Cache open data for this many days
+    fallback_to_cache: true
+
+    # Supported MA open data sources
+    sources:
+      - name: "MassGIS Property Tax Parcels"
+        enabled: true
+        url: "https://www.mass.gov/info-details/massgis-data-property-tax-parcels"
+
+      # Add more sources as they become available
+      # Each source needs explicit Terms of Use verification
+
+# Google Sheets Integration (Optional)
+# ------------------------------------
+google_sheets:
+  enabled: false
+  # spreadsheet_id: "your-spreadsheet-id"
+  # sheet_name: "Leads"
+  # credentials_file: "./credentials/google-service-account.json"
+
+# Logging
+# -------
+logging:
+  level: info  # debug, info, warn, error
+  file: "./logs/lead-bot.log"
+  max_size_mb: 10
+  retain_days: 30

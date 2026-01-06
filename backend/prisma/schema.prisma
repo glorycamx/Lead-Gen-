@@ -1,0 +1,230 @@
+// Massachusetts Solar + Mass Save Lead Bot
+// Prisma Schema for SQLite Database
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// CORE LEAD MODEL
+// ============================================================================
+
+model Lead {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Address Information
+  address       String
+  streetNumber  String?
+  streetName    String?
+  unit          String?
+  city          String
+  state         String  @default("MA")
+  zipCode       String
+  county        String?
+
+  // Property Information
+  propertyType    String? // single_family, multi_family, condo, other
+  yearBuilt       Int?
+  sqft            Int?
+  lotSizeAcres    Float?
+  bedrooms        Int?
+  bathrooms       Float?
+  assessedValue   Float?
+  lastSalePrice   Float?
+  lastSaleDate    DateTime?
+
+  // Owner Information
+  ownerName         String?
+  ownerMailingAddr  String?
+  isOwnerOccupied   Boolean?  // Derived: mailing matches property
+
+  // Parcel Information
+  parcelId    String?
+  mapLot      String?
+  landUseCode String?
+
+  // Geocoding
+  latitude  Float?
+  longitude Float?
+
+  // Program Fit Flags
+  solarCandidate    Boolean @default(false)
+  massSaveCandidate Boolean @default(false)
+
+  // Scoring
+  fitScore        Int      @default(0) // 0-100
+  scoreBreakdown  String?  // JSON string of score factors
+  scoreExplainer  String?  // Human-readable explanation
+
+  // AI-Generated Content
+  doorKnockNote  String?
+  smsDraft       String?
+  emailDraft     String?
+
+  // Suggested Action
+  suggestedAction String? // Knock, Mailer, Wait, Skip
+
+  // Status Tracking
+  status           String   @default("not_contacted")
+  statusUpdatedAt  DateTime?
+  statusNotes      String?
+
+  // Data Source
+  dataSource  String  // user_csv, open_data, enrichment
+  sourceFile  String? // Original import file name
+  importBatch String? // Batch ID for tracking imports
+
+  // Deduplication
+  addressHash String? @unique // For deduplication
+
+  @@index([city])
+  @@index([zipCode])
+  @@index([county])
+  @@index([fitScore])
+  @@index([status])
+  @@index([solarCandidate])
+  @@index([massSaveCandidate])
+  @@index([createdAt])
+}
+
+// ============================================================================
+// DAILY EXPORT RUNS
+// ============================================================================
+
+model ExportRun {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  runDate     DateTime
+  runType     String   // scheduled, manual
+  status      String   // running, completed, failed
+
+  // Statistics
+  totalLeadsProcessed Int      @default(0)
+  newLeadsAdded       Int      @default(0)
+  leadsExported       Int      @default(0)
+
+  // Output Files
+  csvFilePath    String?
+  sqliteRowCount Int     @default(0)
+  sheetsRowCount Int     @default(0)
+
+  // Timing
+  startedAt   DateTime?
+  completedAt DateTime?
+  durationMs  Int?
+
+  // Errors
+  errorMessage String?
+  errorStack   String?
+
+  // Logs
+  logs String? // JSON array of log entries
+
+  @@index([runDate])
+  @@index([status])
+}
+
+// ============================================================================
+// IMPORT BATCHES
+// ============================================================================
+
+model ImportBatch {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  fileName      String
+  fileSize      Int
+  fileType      String // csv, xlsx
+  sourceType    String // user_upload, open_data
+
+  // Processing
+  status        String   @default("pending") // pending, processing, completed, failed
+  processedAt   DateTime?
+
+  // Statistics
+  totalRows     Int @default(0)
+  validRows     Int @default(0)
+  duplicateRows Int @default(0)
+  errorRows     Int @default(0)
+
+  // Column Mapping
+  columnMapping String? // JSON of detected/mapped columns
+
+  // Errors
+  errors String? // JSON array of row-level errors
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+// ============================================================================
+// DATA SOURCE STATUS
+// ============================================================================
+
+model DataSourceStatus {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sourceName  String @unique
+  sourceType  String // open_data, user_csv
+  sourceUrl   String?
+
+  // Health
+  isHealthy     Boolean   @default(true)
+  lastCheckAt   DateTime?
+  lastSuccessAt DateTime?
+  lastErrorAt   DateTime?
+  errorMessage  String?
+
+  // Cache
+  cacheFilePath String?
+  cacheUpdatedAt DateTime?
+  cacheRowCount  Int       @default(0)
+
+  // Coverage
+  towns   String? // JSON array of covered towns
+  records Int     @default(0)
+}
+
+// ============================================================================
+// CONFIGURATION SNAPSHOTS
+// ============================================================================
+
+model ConfigSnapshot {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  configYaml String // Full config at time of run
+  configHash String // For detecting changes
+
+  exportRunId String?
+
+  @@index([createdAt])
+}
+
+// ============================================================================
+// STATUS HISTORY
+// ============================================================================
+
+model StatusHistory {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  leadId     String
+  oldStatus  String
+  newStatus  String
+  notes      String?
+  changedBy  String? // user, system
+
+  @@index([leadId])
+  @@index([createdAt])
+}

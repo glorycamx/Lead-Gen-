@@ -1,0 +1,11 @@
+address,city,zip_code,county,property_type,year_built,sqft,lot_size_acres,bedrooms,bathrooms,assessed_value,last_sale_price,last_sale_date,owner_name,mailing_address,parcel_id
+123 Main Street,Haverhill,01830,Essex,single_family,1985,2100,0.25,4,2.5,450000,425000,2019-06-15,John Smith,123 Main Street Haverhill MA 01830,M123-456-789
+456 Oak Avenue,Methuen,01844,Essex,single_family,1962,1850,0.33,3,1.5,385000,350000,2018-03-22,Jane Doe,456 Oak Avenue Methuen MA 01844,M234-567-890
+789 Elm Court,Andover,01810,Essex,single_family,1978,2400,0.5,4,2,520000,480000,2020-09-10,Robert Johnson,789 Elm Court Andover MA 01810,M345-678-901
+321 Pine Road,Lawrence,01841,Essex,multi_family,1955,3200,0.4,6,3,425000,390000,2017-11-05,Maria Garcia,789 Different St Boston MA 02101,M456-789-012
+654 Maple Lane,Haverhill,01835,Essex,single_family,1992,1950,0.28,3,2,410000,375000,2021-02-28,Michael Brown,654 Maple Lane Haverhill MA 01835,M567-890-123
+987 Cedar Street,North Andover,01845,Essex,condo,2005,1200,0,2,2,325000,310000,2022-04-15,Sarah Wilson,987 Cedar Street Unit 4 North Andover MA 01845,M678-901-234
+111 Birch Drive,Methuen,01844,Essex,single_family,1970,2200,0.35,4,2,395000,360000,2019-08-20,David Lee,111 Birch Drive Methuen MA 01844,M789-012-345
+222 Walnut Way,Haverhill,01830,Essex,single_family,1958,1700,0.3,3,1,340000,300000,2016-12-01,Jennifer Martinez,222 Walnut Way Haverhill MA 01830,M890-123-456
+333 Spruce Avenue,Lawrence,01843,Essex,multi_family,1948,2800,0.45,5,2.5,380000,340000,2018-07-10,Christopher Anderson,456 Far Away Rd Miami FL 33101,M901-234-567
+444 Willow Street,Andover,01810,Essex,single_family,1995,2650,0.42,4,3,580000,550000,2021-11-30,Amanda Taylor,444 Willow Street Andover MA 01810,M012-345-678
