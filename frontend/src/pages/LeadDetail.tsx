@@ -12,9 +12,6 @@ import {
   DollarSign,
   User,
   MapPin,
-  MessageSquare,
-  Mail,
-  Phone,
   Copy,
   Check
 } from 'lucide-react'

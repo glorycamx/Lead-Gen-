@@ -17,6 +17,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Serve static frontend files
+const frontendDist = path.join(__dirname, '../../frontend/dist');
+app.use(express.static(frontendDist));
+
 // Mock Data
 const mockLeads = [
   {
@@ -447,6 +451,11 @@ app.get('/api/config/counties', (req, res) => {
   res.json(['Barnstable', 'Berkshire', 'Bristol', 'Dukes', 'Essex', 'Franklin', 'Hampden', 'Hampshire', 'Middlesex', 'Nantucket', 'Norfolk', 'Plymouth', 'Suffolk', 'Worcester']);
 });
 
+// Catch-all: serve index.html for SPA routing
+app.get('*', (req, res) => {
+  res.sendFile(path.join(frontendDist, 'index.html'));
+});
+
 // Start server
 const PORT = 3001;
 app.listen(PORT, '0.0.0.0', () => {
@@ -456,8 +465,8 @@ app.listen(PORT, '0.0.0.0', () => {
   DEMO MODE
 ========================================
 
-Backend running at: http://localhost:${PORT}
-Frontend will be at: http://localhost:5173
+App running at: http://localhost:${PORT}
+(Frontend + API combined)
 
 Demo includes:
 - ${mockLeads.length} sample leads with scores
