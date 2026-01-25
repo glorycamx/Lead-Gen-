@@ -69,3 +69,91 @@ body {
 .status-do_not_contact {
   @apply bg-gray-800 text-gray-100;
 }
+
+/* Blinker Game Animations */
+@keyframes float-up {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-200px) translateX(var(--drift, 20px));
+    opacity: 0;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px currentColor;
+  }
+  50% {
+    box-shadow: 0 0 20px currentColor, 0 0 30px currentColor;
+  }
+}
+
+@keyframes blinker-flash {
+  0%, 100% {
+    opacity: 1;
+    background-color: #22c55e;
+  }
+  50% {
+    opacity: 0.3;
+    background-color: #ffffff;
+  }
+}
+
+@keyframes wobble {
+  0%, 100% {
+    transform: rotate(-1deg);
+  }
+  50% {
+    transform: rotate(1deg);
+  }
+}
+
+@keyframes celebration {
+  0% {
+    transform: scale(0.5) rotate(-10deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.animate-float-up {
+  animation: float-up 3s ease-out forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 0.5s ease-in-out infinite;
+}
+
+.animate-blinker-flash {
+  animation: blinker-flash 0.2s ease-in-out infinite;
+}
+
+.animate-wobble {
+  animation: wobble 0.5s ease-in-out infinite;
+}
+
+.animate-celebration {
+  animation: celebration 0.5s ease-out forwards;
+}
+
+.animation-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}

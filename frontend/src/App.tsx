@@ -7,6 +7,7 @@ import Imports from './pages/Imports'
 import Exports from './pages/Exports'
 import Settings from './pages/Settings'
 import Pipeline from './pages/Pipeline'
+import BlinkerGame from './pages/BlinkerGame'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/exports" element={<Exports />} />
         <Route path="/pipeline" element={<Pipeline />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/blinker" element={<BlinkerGame />} />
       </Routes>
     </Layout>
   )
