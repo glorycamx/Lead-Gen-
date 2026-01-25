@@ -7,7 +7,8 @@ import {
   Settings,
   LayoutDashboard,
   Play,
-  Leaf
+  Leaf,
+  Flame
 } from 'lucide-react'
 import clsx from 'clsx'
 
@@ -21,7 +22,8 @@ const navItems = [
   { path: '/imports', label: 'Imports', icon: Upload },
   { path: '/exports', label: 'Exports', icon: Download },
   { path: '/pipeline', label: 'Pipeline', icon: Play },
-  { path: '/settings', label: 'Settings', icon: Settings }
+  { path: '/settings', label: 'Settings', icon: Settings },
+  { path: '/blinker', label: 'Blinker Game', icon: Flame }
 ]
 
 export default function Layout({ children }: LayoutProps) {
