@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "MA Solar Lead Bot",
+    "slug": "ma-solar-lead-bot",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#1f2937"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.masolar.leadbot"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#1f2937"
+      },
+      "package": "com.masolar.leadbot"
+    },
+    "plugins": [
+      "expo-document-picker"
+    ]
+  }
+}
