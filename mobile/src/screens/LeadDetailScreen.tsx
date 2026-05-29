@@ -197,13 +197,13 @@ export default function LeadDetailScreen({ route }: Props) {
       )}
 
       {/* Status history */}
-      {history?.history?.length > 0 && (
+      {(history as any[])?.length > 0 && (
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Status History</Text>
-          {history.history.slice(0, 5).map((h: any, i: number) => (
+          {(history as any[]).slice(0, 5).map((h: any, i: number) => (
             <View key={h.id ?? i} style={styles.historyRow}>
               <Text style={styles.historyStatus}>{STATUS_LABELS[h.newStatus as LeadStatus] ?? h.newStatus}</Text>
-              <Text style={styles.historyDate}>{dayjs(h.changedAt).fromNow()}</Text>
+              <Text style={styles.historyDate}>{dayjs(h.createdAt).fromNow()}</Text>
             </View>
           ))}
         </View>

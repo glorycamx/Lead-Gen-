@@ -47,7 +47,7 @@ export default function LeadsScreen({ navigation }: Props) {
         limit: 25,
         search: search || undefined,
         status: status || undefined,
-        scoreTier: scoreTier || undefined,
+        minScore: scoreTier || undefined,
       }),
     placeholderData: (prev) => prev,
   });
